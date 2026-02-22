@@ -1,39 +1,57 @@
-# QR-Bridge: Offline Text Transfer
+# QR Chunks (Offline Mobile Web App)
 
-QR-Bridge is a secure, 100% offline mobile-first web application designed to move large blocks of text between devices using sequential QR codes.
+QR Chunks is a mobile-first web app for moving large text offline between devices using sequential QR codes.
 
-## How it Works
+## Why React + Vite?
+- **Offline reliability:** Static assets can run locally and can be cached by the browser; generation and scan logic are fully on-device.
+- **QR stability:** `qrcode.react` (generation) and `html5-qrcode` (camera decode) are mature libraries with reliable mobile support.
+- **Fast iteration:** Vite + TypeScript keeps the app lightweight and easy to run offline.
 
-### 1. Chunking Logic
-Large text is split into uniform chunks of approximately 800 characters. This size is chosen to ensure high scan reliability even on lower-quality cameras or in poor lighting conditions. We use `Array.from()` to ensure Unicode characters (like emojis or non-Latin scripts) are counted correctly as single units.
+## QR Payload Format
+Every QR code contains metadata + payload:
 
-### 2. QR Payload Format
-Each QR code contains a structured payload with metadata for reconstruction:
 ```text
-QRSET:<unique-set-id>
-PART:<current-index>/<total-parts>
-DATA:<chunk-text-payload>
+QRSET:<unique-id>
+PART:<current>/<total>
+DATA:<chunk-text>
 ```
-- **QRSET**: A random 8-character ID generated per session to ensure chunks from different transfers aren't mixed.
-- **PART**: The sequence information (e.g., "2/5").
-- **DATA**: The actual text content for this chunk.
 
-### 3. Reconstruction
-The receiving device scans chunks in any order. The application:
-1. Identifies the `QRSET` ID.
-2. Stores the `DATA` in a map keyed by the `PART` index.
-3. Tracks progress against the `total-parts` count.
-4. Once all parts are present, joins them in sequence to rebuild the original text.
+Example:
+```text
+QRSET:AB12CD34
+PART:2/4
+DATA:<actual text chunk>
+```
 
-## Offline Guarantees
-- **No Internet Required**: All QR generation and scanning logic happens entirely in the browser.
-- **No Analytics**: No tracking scripts or external logging.
-- **No Cloud**: No data is ever sent to a server.
-- **No Retention**: Text is stored only in component state and is lost when the page is refreshed or the "Reset" button is clicked.
+## Chunking Logic
+- Default chunk size: **900 chars** (conservative range 800–1000).
+- Uses `Array.from(text)` to split by Unicode code points.
+- Preserves all spacing/newlines/Unicode by joining chunks exactly.
 
-## Technical Stack
-- **React 19**: Modern UI framework.
-- **Tailwind CSS**: For the "Liquid Glass" aesthetic.
-- **qrcode.react**: High-performance SVG QR generation.
-- **html5-qrcode**: Robust, cross-platform camera scanning.
-- **Framer Motion**: Smooth, native-feeling transitions.
+## Reconstruction Logic
+- Receiver scans chunks in any order.
+- Chunks are grouped by `QRSET`.
+- `PART` index places each chunk in a map.
+- Once all `1..total` entries exist, text is reassembled exactly and can be copied.
+
+## Privacy and Offline Guarantees
+- No network calls are required for generation/scanning.
+- No analytics, cloud sync, login, or background logging.
+- Data is kept only in local app state unless user manually copies it.
+- Manual clear button removes current text/chunks state.
+
+## Run
+```bash
+npm install
+npm run dev
+```
+
+## Test
+```bash
+npm test
+```
+
+Tests cover:
+- chunk splitting behavior,
+- payload parsing/formatting,
+- reassembly fidelity with Unicode.

@@ -9,8 +9,8 @@
 @layer base {
   body {
     @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased;
-    background-image: radial-gradient(circle at top left, var(--color-indigo-500/10), transparent 40%),
-                      radial-gradient(circle at bottom right, var(--color-emerald-500/10), transparent 40%);
+    background-image: radial-gradient(circle at top left, rgba(99, 102, 241, 0.12), transparent 40%),
+                      radial-gradient(circle at bottom right, rgba(16, 185, 129, 0.12), transparent 40%);
     min-height: 100vh;
   }
 }
