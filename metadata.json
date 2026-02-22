@@ -1,0 +1,5 @@
+{
+  "name": "QR-Bridge: Offline Text Transfer",
+  "description": "Securely transfer large text blocks between devices using sequential QR codes. Works entirely offline with no data retention.",
+  "requestFramePermissions": ["camera"]
+}
