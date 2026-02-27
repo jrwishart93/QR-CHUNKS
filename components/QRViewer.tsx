@@ -1,4 +1,5 @@
 import { useMemo, useState, TouchEvent } from 'react';
+import { motion } from 'framer-motion';
 import { X, Sun, ChevronLeft, ChevronRight } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { QRChunk } from '../types';
@@ -34,41 +35,46 @@ export default function QRViewer({ chunks, onClose }: QRViewerProps) {
     setTouchStartX(null);
   };
 
+  const qrSize = Math.min(window.innerWidth - 48, 360);
+
   return (
-    <div
-      className={`fixed inset-0 z-50 bg-slate-950/90 text-white p-4 flex flex-col ${boostBrightness ? 'brightness-125' : ''}`}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className={`fixed inset-0 z-50 flex flex-col bg-slate-950/90 p-4 text-white backdrop-blur-xl ${boostBrightness ? 'brightness-125' : ''}`}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      <div className="flex items-center justify-between mb-6">
-        <button onClick={onClose} className="p-3 rounded-full bg-white/10" aria-label="Close viewer">
+      <div className="mb-6 flex items-center justify-between">
+        <button onClick={onClose} className="rounded-full bg-white/10 p-3" aria-label="Close viewer">
           <X size={20} />
         </button>
         <p className="text-sm font-semibold tracking-wide">{index + 1} of {chunks.length}</p>
         <button
           onClick={() => setBoostBrightness((value) => !value)}
-          className={`p-3 rounded-full ${boostBrightness ? 'bg-amber-400 text-slate-950' : 'bg-white/10'}`}
+          className={`rounded-full p-3 ${boostBrightness ? 'bg-amber-400 text-slate-950' : 'bg-white/10'}`}
           aria-label="Toggle brightness boost"
         >
           <Sun size={20} />
         </button>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center gap-5">
-        <div className="bg-white p-4 rounded-3xl shadow-2xl">
-          <QRCodeSVG value={payload} size={Math.min(window.innerWidth - 64, 360)} level="M" includeMargin />
-        </div>
-        <p className="text-xs font-mono text-center text-slate-300 max-w-xs break-all">{activeChunk.setId} • PART {activeChunk.part}/{activeChunk.total}</p>
+      <div className="flex flex-1 flex-col items-center justify-center gap-5">
+        <motion.div key={index} initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.2 }} className="rounded-3xl bg-white p-3 shadow-2xl sm:p-4">
+          <QRCodeSVG value={payload} size={qrSize} level="M" includeMargin />
+        </motion.div>
+        <p className="max-w-xs break-all text-center font-mono text-xs text-slate-300">{activeChunk.setId} • PART {activeChunk.part}/{activeChunk.total}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <button onClick={previous} disabled={index === 0} className="py-3 rounded-2xl bg-white/10 disabled:opacity-40 flex justify-center">
+        <button onClick={previous} disabled={index === 0} className="flex justify-center rounded-2xl bg-white/10 py-3 disabled:opacity-40">
           <ChevronLeft />
         </button>
-        <button onClick={next} disabled={index === chunks.length - 1} className="py-3 rounded-2xl bg-white/10 disabled:opacity-40 flex justify-center">
+        <button onClick={next} disabled={index === chunks.length - 1} className="flex justify-center rounded-2xl bg-white/10 py-3 disabled:opacity-40">
           <ChevronRight />
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }

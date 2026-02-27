@@ -8,18 +8,52 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased;
-    background-image: radial-gradient(circle at top left, rgba(99, 102, 241, 0.12), transparent 40%),
-                      radial-gradient(circle at bottom right, rgba(16, 185, 129, 0.12), transparent 40%);
+    @apply text-slate-900 dark:text-slate-100 antialiased;
+    background:
+      radial-gradient(circle at 8% 12%, rgba(99, 102, 241, 0.26), transparent 34%),
+      radial-gradient(circle at 88% 84%, rgba(16, 185, 129, 0.2), transparent 36%),
+      linear-gradient(140deg, #f8fafc 0%, #eef2ff 50%, #e2e8f0 100%);
     min-height: 100vh;
+  }
+
+  .dark body {
+    background:
+      radial-gradient(circle at 8% 12%, rgba(99, 102, 241, 0.36), transparent 40%),
+      radial-gradient(circle at 88% 84%, rgba(16, 185, 129, 0.22), transparent 40%),
+      linear-gradient(140deg, #020617 0%, #0f172a 45%, #111827 100%);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -12px, 0) scale(1.05);
   }
 }
 
 .glass {
-  @apply backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-2xl;
-  background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+  @apply relative overflow-hidden backdrop-blur-2xl border border-white/35 dark:border-white/15 shadow-2xl;
+  background: linear-gradient(130deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.2));
+  box-shadow: 0 30px 70px -38px rgba(30, 41, 59, 0.55);
+}
+
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.44), transparent 40%, rgba(255, 255, 255, 0.1) 65%, transparent);
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 .dark .glass {
-  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+  background: linear-gradient(130deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.4));
+  box-shadow: 0 30px 70px -38px rgba(2, 6, 23, 0.9);
+}
+
+.orb {
+  animation: float 8s ease-in-out infinite;
 }
