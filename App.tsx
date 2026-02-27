@@ -13,6 +13,7 @@ const fadeUp = {
 };
 
 export default function App() {
+  const [useCleanPayload, setUseCleanPayload] = useState(false);
   const [inputText, setInputText] = useState('');
   const [chunkSize, setChunkSize] = useState(DEFAULT_CHUNK_SIZE);
   const [chunks, setChunks] = useState<QRChunk[]>([]);
@@ -108,6 +109,15 @@ export default function App() {
                 <input type="range" min={800} max={1000} value={chunkSize} onChange={(e) => setChunkSize(Number(e.target.value))} className="flex-1 accent-indigo-400" />
                 <span className="w-14 text-right text-sm font-mono text-slate-200">{chunkSize}</span>
               </div>
+              <label className="mt-3 flex items-center gap-2 text-sm text-slate-300">
+                <input
+                  type="checkbox"
+                  checked={useCleanPayload}
+                  onChange={(e) => setUseCleanPayload(e.target.checked)}
+                  className="h-4 w-4 rounded border-indigo-300/35 bg-slate-950/50 accent-indigo-400"
+                />
+                Clean QR payload (encode only the raw chunk text)
+              </label>
               <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
                 <button onClick={generate} disabled={!inputText} className="sm:col-span-2 rounded-2xl border border-indigo-300/35 bg-gradient-to-r from-indigo-500 to-blue-500 py-3 text-white shadow-lg shadow-indigo-600/35 transition active:scale-[0.99] disabled:opacity-50">
                   Generate QR Codes
@@ -149,7 +159,7 @@ export default function App() {
         </main>
       </div>
 
-      {chunks.length > 0 && <QRViewer chunks={chunks} onClose={() => setChunks([])} />}
+      {chunks.length > 0 && <QRViewer chunks={chunks} useCleanPayload={useCleanPayload} onClose={() => setChunks([])} />}
       {isScanning && <QRScanner onChunkScanned={onChunkScanned} onClose={() => setIsScanning(false)} />}
     </div>
   );

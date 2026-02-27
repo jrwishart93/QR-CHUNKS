@@ -7,16 +7,20 @@ import { formatQRPayload } from '../utils/qrUtils';
 
 interface QRViewerProps {
   chunks: QRChunk[];
+  useCleanPayload: boolean;
   onClose: () => void;
 }
 
-export default function QRViewer({ chunks, onClose }: QRViewerProps) {
+export default function QRViewer({ chunks, useCleanPayload, onClose }: QRViewerProps) {
   const [index, setIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [boostBrightness, setBoostBrightness] = useState(false);
 
   const activeChunk = chunks[index];
-  const payload = useMemo(() => formatQRPayload(activeChunk), [activeChunk]);
+  const payload = useMemo(() => {
+    if (useCleanPayload) return activeChunk.data;
+    return formatQRPayload(activeChunk);
+  }, [activeChunk, useCleanPayload]);
 
   const next = () => setIndex((i) => Math.min(i + 1, chunks.length - 1));
   const previous = () => setIndex((i) => Math.max(i - 1, 0));
@@ -64,7 +68,9 @@ export default function QRViewer({ chunks, onClose }: QRViewerProps) {
         <motion.div key={index} initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.2 }} className="rounded-3xl border border-indigo-300/30 bg-white p-3 shadow-[0_0_30px_rgba(99,102,241,0.3)] sm:p-4">
           <QRCodeSVG value={payload} size={qrSize} level="M" includeMargin />
         </motion.div>
-        <p className="max-w-xs break-all rounded-xl border border-indigo-300/25 bg-slate-900/60 px-3 py-2 text-center font-mono text-xs text-slate-300">{activeChunk.setId} • PART {activeChunk.part}/{activeChunk.total}</p>
+        <p className="max-w-xs break-all rounded-xl border border-indigo-300/25 bg-slate-900/60 px-3 py-2 text-center font-mono text-xs text-slate-300">
+          {useCleanPayload ? 'CLEAN PAYLOAD' : `${activeChunk.setId} • PART ${activeChunk.part}/${activeChunk.total}`}
+        </p>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
