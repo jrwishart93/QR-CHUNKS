@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ScanLine, X } from 'lucide-react';
 import { QRChunk } from '../types';
 import { parseQRPayload } from '../utils/qrUtils';
 
@@ -60,15 +61,15 @@ export default function QRScanner({ onChunkScanned, onClose }: QRScannerProps) {
   }, [onChunkScanned]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/95 p-4 text-white flex flex-col">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="font-semibold">Scan QR Chunk</h2>
-        <button onClick={onClose} className="p-3 rounded-full bg-white/10" aria-label="Close scanner">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-50 flex flex-col bg-slate-950/95 p-4 text-white backdrop-blur-xl">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="flex items-center gap-2 font-semibold"><ScanLine size={18} />Scan QR Chunk</h2>
+        <button onClick={onClose} className="rounded-full bg-white/10 p-3" aria-label="Close scanner">
           <X size={20} />
         </button>
       </div>
-      <div id={containerId} className="flex-1 min-h-[340px] rounded-3xl overflow-hidden" />
-      <p className="text-sm text-slate-300 text-center mt-4">{status}</p>
-    </div>
+      <div id={containerId} className="min-h-[340px] flex-1 overflow-hidden rounded-3xl border border-white/15" />
+      <p className="mt-4 text-center text-sm text-slate-300">{status}</p>
+    </motion.div>
   );
 }
