@@ -63,12 +63,12 @@ export default function QRScanner({ onChunkScanned, onClose }: QRScannerProps) {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-50 flex flex-col bg-slate-950/95 p-4 text-white backdrop-blur-xl">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="flex items-center gap-2 font-semibold"><ScanLine size={18} />Scan QR Chunk</h2>
-        <button onClick={onClose} className="rounded-full bg-white/10 p-3" aria-label="Close scanner">
+        <h2 className="flex items-center gap-2 font-semibold text-sky-100"><ScanLine size={18} />Scan QR Chunk</h2>
+        <button onClick={onClose} className="rounded-full border border-indigo-300/30 bg-indigo-500/15 p-3" aria-label="Close scanner">
           <X size={20} />
         </button>
       </div>
-      <div id={containerId} className="min-h-[340px] flex-1 overflow-hidden rounded-3xl border border-white/15" />
+      <div id={containerId} className="min-h-[340px] flex-1 overflow-hidden rounded-3xl border border-indigo-300/25 shadow-[0_0_30px_rgba(99,102,241,0.25)]" />
       <p className="mt-4 text-center text-sm text-slate-300">{status}</p>
     </motion.div>
   );

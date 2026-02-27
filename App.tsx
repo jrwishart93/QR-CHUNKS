@@ -69,10 +69,11 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden px-3 py-5 sm:px-5 sm:py-8">
+    <div className="relative min-h-screen overflow-hidden px-3 py-5 text-slate-100 sm:px-5 sm:py-8">
       <div className="pointer-events-none absolute inset-0">
-        <div className="orb absolute -left-16 top-16 h-52 w-52 rounded-full bg-indigo-500/30 blur-3xl" />
-        <div className="orb absolute -right-14 bottom-8 h-56 w-56 rounded-full bg-emerald-400/25 blur-3xl [animation-delay:-3s]" />
+        <div className="orb absolute -left-20 top-12 h-56 w-56 rounded-full bg-violet-500/30 blur-3xl" />
+        <div className="orb absolute right-10 top-8 h-44 w-44 rounded-full bg-blue-500/25 blur-3xl [animation-delay:-2s]" />
+        <div className="orb absolute -right-16 bottom-6 h-56 w-56 rounded-full bg-fuchsia-500/20 blur-3xl [animation-delay:-4s]" />
       </div>
 
       <div className="relative mx-auto w-full max-w-3xl">
@@ -80,38 +81,38 @@ export default function App() {
           <motion.div
             animate={{ y: [0, -5, 0] }}
             transition={{ repeat: Number.POSITIVE_INFINITY, duration: 3.8, ease: 'easeInOut' }}
-            className="mb-3 inline-flex items-center gap-2 rounded-2xl bg-indigo-600 px-4 py-3 text-white shadow-lg shadow-indigo-500/40"
+            className="mb-3 inline-flex items-center gap-2 rounded-2xl border border-indigo-300/35 bg-indigo-500/30 px-4 py-3 text-white shadow-lg shadow-indigo-500/40 neon-ring"
           >
             <QrCode size={22} />
-            <Sparkles size={17} />
+            <Sparkles size={17} className="text-sky-200" />
           </motion.div>
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">QR Chunks</h1>
-          <p className="mx-auto mt-2 max-w-xl text-sm text-slate-600 dark:text-slate-300 sm:text-base">Offline large-text transfer between devices with a liquid glass interface.</p>
+          <h1 className="bg-gradient-to-r from-indigo-200 via-sky-100 to-violet-200 bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl">QR Chunks</h1>
+          <p className="mx-auto mt-2 max-w-xl text-sm text-slate-300 sm:text-base">Offline large-text transfer between devices with a dark neon glass interface.</p>
         </motion.header>
 
         <main className="space-y-4 sm:space-y-5">
           <motion.div {...fadeUp} transition={{ delay: 0.1, duration: 0.45 }}>
             <GlassCard>
               <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-                <h2 className="font-semibold">Sender Mode</h2>
-                <span className="rounded-full bg-slate-900/5 px-3 py-1 text-xs font-mono text-slate-600 dark:bg-white/10 dark:text-slate-200">{inputText.length.toLocaleString()} chars</span>
+                <h2 className="font-semibold text-slate-100">Sender Mode</h2>
+                <span className="rounded-full border border-indigo-300/25 bg-slate-900/60 px-3 py-1 text-xs font-mono text-slate-300">{inputText.length.toLocaleString()} chars</span>
               </div>
               <textarea
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                className="h-44 w-full resize-none rounded-2xl border border-white/40 bg-white/40 p-3 text-sm outline-none transition focus:ring-2 focus:ring-indigo-500/50 dark:border-white/10 dark:bg-slate-900/40 sm:h-56 sm:text-base"
+                className="h-44 w-full resize-none rounded-2xl border border-indigo-300/20 bg-slate-950/50 p-3 text-sm text-slate-100 outline-none transition placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-400/50 sm:h-56 sm:text-base"
                 placeholder="Paste text to split into QR-safe chunks"
               />
               <div className="mt-4 flex items-center gap-3">
-                <label className="text-sm">Chunk size</label>
-                <input type="range" min={800} max={1000} value={chunkSize} onChange={(e) => setChunkSize(Number(e.target.value))} className="flex-1 accent-indigo-600" />
-                <span className="w-14 text-right text-sm font-mono">{chunkSize}</span>
+                <label className="text-sm text-slate-300">Chunk size</label>
+                <input type="range" min={800} max={1000} value={chunkSize} onChange={(e) => setChunkSize(Number(e.target.value))} className="flex-1 accent-indigo-400" />
+                <span className="w-14 text-right text-sm font-mono text-slate-200">{chunkSize}</span>
               </div>
               <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                <button onClick={generate} disabled={!inputText} className="sm:col-span-2 rounded-2xl bg-indigo-600 py-3 text-white shadow-lg shadow-indigo-500/30 transition active:scale-[0.99] disabled:opacity-50">
+                <button onClick={generate} disabled={!inputText} className="sm:col-span-2 rounded-2xl border border-indigo-300/35 bg-gradient-to-r from-indigo-500 to-blue-500 py-3 text-white shadow-lg shadow-indigo-600/35 transition active:scale-[0.99] disabled:opacity-50">
                   Generate QR Codes
                 </button>
-                <button onClick={clearAll} className="flex items-center justify-center rounded-2xl bg-slate-300/70 py-3 transition active:scale-[0.99] dark:bg-slate-700/70">
+                <button onClick={clearAll} className="flex items-center justify-center rounded-2xl border border-slate-500/40 bg-slate-800/70 py-3 text-slate-200 transition active:scale-[0.99]">
                   <Trash2 size={18} />
                 </button>
               </div>
@@ -121,28 +122,28 @@ export default function App() {
           <motion.div {...fadeUp} transition={{ delay: 0.2, duration: 0.45 }}>
             <GlassCard>
               <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-                <h2 className="font-semibold">Receiver Mode (optional)</h2>
-                <button onClick={() => setIsScanning(true)} className="flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-white shadow-lg shadow-emerald-500/30 transition active:scale-[0.99]">
+                <h2 className="font-semibold text-slate-100">Receiver Mode (optional)</h2>
+                <button onClick={() => setIsScanning(true)} className="flex items-center gap-2 rounded-xl border border-sky-300/35 bg-gradient-to-r from-sky-500 to-indigo-500 px-4 py-2 text-white shadow-lg shadow-sky-500/30 transition active:scale-[0.99]">
                   <Scan size={16} /> Scan
                 </button>
               </div>
               {!transfer ? (
-                <p className="text-sm text-slate-600 dark:text-slate-300">No chunks scanned yet. Start scanning to reconstruct text offline.</p>
+                <p className="text-sm text-slate-300">No chunks scanned yet. Start scanning to reconstruct text offline.</p>
               ) : (
                 <div className="space-y-3">
-                  <p className="text-sm">Set <span className="font-mono">{transfer.id}</span> • {receivedCount}/{transfer.total} parts</p>
+                  <p className="text-sm text-slate-200">Set <span className="font-mono">{transfer.id}</span> • {receivedCount}/{transfer.total} parts</p>
                   {isComplete ? (
                     <>
-                      <div className="flex items-center gap-2 rounded-xl bg-emerald-500/10 p-3 text-emerald-700 dark:text-emerald-300"><CheckCircle2 size={18} />Reconstruction complete</div>
-                      <pre className="max-h-48 overflow-y-auto whitespace-pre-wrap rounded-xl bg-slate-100/80 p-3 text-xs dark:bg-slate-900/70">{reconstructed}</pre>
-                      <button onClick={copyRebuilt} className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-3 text-white shadow-lg shadow-indigo-500/30 transition active:scale-[0.99]"><Copy size={16} />Copy text</button>
+                      <div className="flex items-center gap-2 rounded-xl border border-emerald-300/25 bg-emerald-500/10 p-3 text-emerald-200"><CheckCircle2 size={18} />Reconstruction complete</div>
+                      <pre className="max-h-48 overflow-y-auto whitespace-pre-wrap rounded-xl border border-indigo-300/20 bg-slate-950/60 p-3 text-xs text-slate-100">{reconstructed}</pre>
+                      <button onClick={copyRebuilt} className="flex w-full items-center justify-center gap-2 rounded-xl border border-indigo-300/35 bg-gradient-to-r from-indigo-500 to-violet-500 py-3 text-white shadow-lg shadow-indigo-600/35 transition active:scale-[0.99]"><Copy size={16} />Copy text</button>
                     </>
                   ) : (
-                    <div className="flex items-center gap-2 rounded-xl bg-amber-500/10 p-3 text-sm text-amber-700 dark:text-amber-300"><AlertCircle size={16} />Continue scanning remaining chunks in any order.</div>
+                    <div className="flex items-center gap-2 rounded-xl border border-amber-300/25 bg-amber-500/10 p-3 text-sm text-amber-200"><AlertCircle size={16} />Continue scanning remaining chunks in any order.</div>
                   )}
                 </div>
               )}
-              {copyNotice && <p className="mt-2 text-center text-sm">{copyNotice}</p>}
+              {copyNotice && <p className="mt-2 text-center text-sm text-slate-300">{copyNotice}</p>}
             </GlassCard>
           </motion.div>
         </main>
